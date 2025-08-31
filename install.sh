@@ -2,13 +2,13 @@
 
 set -euo pipefail
 
-REPO_URL="https://github.com/nixuuu/image-optimizer-rs"
-BINARY_NAME="image-optimizer-rs"
+REPO_URL="https://github.com/nixuuu/image-optimizer"
+BINARY_NAME="image-optimizer"
 INSTALL_DIR="$HOME/.local/bin"
 
 print_header() {
     echo "════════════════════════════════════════════════════════════════"
-    echo "  Image Optimizer RS - Installation Script"
+    echo "  Image Optimizer - Installation Script"
     echo "  CLI tool for optimizing JPEG, PNG, and WebP images"
     echo "════════════════════════════════════════════════════════════════"
     echo
@@ -93,7 +93,7 @@ install_from_binary() {
     temp_dir=$(mktemp -d)
     trap "rm -rf $temp_dir" EXIT
     
-    release_url="https://api.github.com/repos/nixuuu/image-optimizer-rs/releases/latest"
+    release_url="https://api.github.com/repos/nixuuu/image-optimizer/releases/latest"
     
     print_info "Fetching latest release information..."
     if ! curl -sL "$release_url" > "$temp_dir/release.json"; then
@@ -121,22 +121,22 @@ install_from_binary() {
             ;;
     esac
     
-    download_url=$(grep -o "\"browser_download_url\".*image-optimizer-rs-${target}\"" "$temp_dir/release.json" | cut -d'"' -f4 | head -n1 || true)
+    download_url=$(grep -o "\"browser_download_url\".*image-optimizer-${target}\"" "$temp_dir/release.json" | cut -d'"' -f4 | head -n1 || true)
     
     if [ -z "$download_url" ]; then
         print_error "No prebuilt binary found for $target ($OS-$ARCH)"
         print_info "Available binaries:"
-        grep -o "\"name\":\"image-optimizer-rs-[^\"]*\"" "$temp_dir/release.json" | cut -d'"' -f4 || true
+        grep -o "\"name\":\"image-optimizer-[^\"]*\"" "$temp_dir/release.json" | cut -d'"' -f4 || true
         return 1
     fi
     
     print_info "Downloading $download_url..."
-    if ! curl -sL "$download_url" -o "$temp_dir/image-optimizer-rs-${target}"; then
+    if ! curl -sL "$download_url" -o "$temp_dir/image-optimizer-${target}"; then
         print_error "Failed to download binary"
         return 1
     fi
     
-    local binary_path="$temp_dir/image-optimizer-rs-${target}"
+    local binary_path="$temp_dir/image-optimizer-${target}"
     
     if [ ! -f "$binary_path" ]; then
         print_error "Binary not found after download"
@@ -158,12 +158,12 @@ install_from_source() {
     trap "rm -rf $temp_dir" EXIT
     
     print_info "Cloning repository..."
-    if ! git clone "$REPO_URL" "$temp_dir/image-optimizer-rs"; then
+    if ! git clone "$REPO_URL" "$temp_dir/image-optimizer"; then
         print_error "Failed to clone repository"
         exit 1
     fi
     
-    cd "$temp_dir/image-optimizer-rs"
+    cd "$temp_dir/image-optimizer"
     
     print_info "Building release binary..."
     if ! cargo build --release; then
@@ -207,7 +207,7 @@ setup_path() {
     else
         print_info "Adding $INSTALL_DIR to PATH in $shell_config"
         echo "" >> "$shell_config"
-        echo "# Added by image-optimizer-rs installer" >> "$shell_config"
+        echo "# Added by image-optimizer installer" >> "$shell_config"
         echo "$path_export" >> "$shell_config"
         print_success "PATH updated in $shell_config"
     fi
@@ -217,7 +217,7 @@ verify_installation() {
     if [ -x "$INSTALL_DIR/$BINARY_NAME" ]; then
         print_success "Installation verified"
         echo
-        echo "🎉 Image Optimizer RS has been successfully installed!"
+        echo "🎉 Image Optimizer has been successfully installed!"
         echo
         echo "Usage:"
         echo "  $BINARY_NAME --help                    # Show help"
@@ -241,7 +241,7 @@ main() {
     check_dependencies
     
     echo
-    print_info "Installing Image Optimizer RS..."
+    print_info "Installing Image Optimizer..."
     print_info "Install method: $INSTALL_METHOD"
     
     if [ "$INSTALL_METHOD" = "binary" ]; then

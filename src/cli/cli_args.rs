@@ -2,7 +2,7 @@ use clap::Parser;
 use std::path::PathBuf;
 
 #[derive(Parser)]
-#[command(name = "image-optimizer-rs")]
+#[command(name = "image-optimizer")]
 #[command(about = "CLI tool for optimizing images (JPEG, PNG, WebP)")]
 #[command(version = env!("CARGO_PKG_VERSION"))]
 #[allow(clippy::struct_excessive_bools)]
@@ -47,7 +47,7 @@ mod tests {
 
     #[test]
     fn test_cli_defaults() {
-        let cli = Cli::parse_from(&["image-optimizer-rs"]);
+        let cli = Cli::parse_from(&["image-optimizer"]);
         assert_eq!(cli.input, None);
         assert_eq!(cli.output, None);
         assert!(!cli.backup);
@@ -60,14 +60,14 @@ mod tests {
 
     #[test]
     fn test_cli_with_input() {
-        let cli = Cli::parse_from(&["image-optimizer-rs", "-i", "/path/to/images"]);
+        let cli = Cli::parse_from(&["image-optimizer", "-i", "/path/to/images"]);
         assert_eq!(cli.input, Some(PathBuf::from("/path/to/images")));
     }
 
     #[test]
     fn test_cli_with_all_flags() {
         let cli = Cli::parse_from(&[
-            "image-optimizer-rs",
+            "image-optimizer",
             "-i",
             "/input",
             "-o",
@@ -94,10 +94,10 @@ mod tests {
 
     #[test]
     fn test_cli_quality_bounds() {
-        let cli = Cli::parse_from(&["image-optimizer-rs", "-q", "1"]);
+        let cli = Cli::parse_from(&["image-optimizer", "-q", "1"]);
         assert_eq!(cli.quality, 1);
 
-        let cli = Cli::parse_from(&["image-optimizer-rs", "-q", "100"]);
+        let cli = Cli::parse_from(&["image-optimizer", "-q", "100"]);
         assert_eq!(cli.quality, 100);
     }
 

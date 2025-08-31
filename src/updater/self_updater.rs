@@ -7,7 +7,7 @@ use super::version_comparator::compare_versions;
 
 const CURRENT_VERSION: &str = env!("CARGO_PKG_VERSION");
 const REPO_OWNER: &str = "nixuuu";
-const REPO_NAME: &str = "image-optimizer-rs";
+const REPO_NAME: &str = "image-optimizer";
 
 /// Downloads and installs the latest version from GitHub releases
 ///
@@ -40,7 +40,7 @@ pub fn update_self() -> Result<()> {
     println!("📦 New version available: {}", release.tag_name);
 
     let target = get_platform_target()?;
-    let binary_name = format!("image-optimizer-rs-{target}");
+    let binary_name = format!("image-optimizer-{target}");
 
     let asset = release
         .assets

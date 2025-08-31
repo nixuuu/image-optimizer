@@ -8,12 +8,12 @@ param(
 $ErrorActionPreference = "Stop"
 $ProgressPreference = "SilentlyContinue"
 
-$RepoUrl = "https://github.com/nixuuu/image-optimizer-rs"
-$BinaryName = "image-optimizer-rs.exe"
+$RepoUrl = "https://github.com/nixuuu/image-optimizer"
+$BinaryName = "image-optimizer.exe"
 
 function Write-Header {
     Write-Host "================================================================" -ForegroundColor Cyan
-    Write-Host "  Image Optimizer RS - Installation Script" -ForegroundColor Cyan
+    Write-Host "  Image Optimizer - Installation Script" -ForegroundColor Cyan
     Write-Host "  CLI tool for optimizing JPEG, PNG, and WebP images" -ForegroundColor Cyan
     Write-Host "================================================================" -ForegroundColor Cyan
     Write-Host ""
@@ -85,7 +85,7 @@ function Install-FromBinary {
     $tempDir = New-TemporaryFile | ForEach-Object { Remove-Item $_; New-Item -ItemType Directory -Path $_ }
     
     try {
-        $releaseUrl = "https://api.github.com/repos/nixuuu/image-optimizer-rs/releases/latest"
+        $releaseUrl = "https://api.github.com/repos/nixuuu/image-optimizer/releases/latest"
         
         Write-Info "Fetching latest release information..."
         $releaseData = Invoke-RestMethod -Uri $releaseUrl
@@ -140,7 +140,7 @@ function Install-FromSource {
     
     try {
         Write-Info "Cloning repository..."
-        $repoDir = Join-Path $tempDir "image-optimizer-rs"
+        $repoDir = Join-Path $tempDir "image-optimizer"
         git clone $RepoUrl $repoDir
         
         if ($LASTEXITCODE -ne 0) {
@@ -221,7 +221,7 @@ function Test-Installation {
     if (Test-Path $binaryPath) {
         Write-Success "Installation verified"
         Write-Host ""
-        Write-Host "🎉 Image Optimizer RS has been successfully installed!" -ForegroundColor Green
+        Write-Host "🎉 Image Optimizer has been successfully installed!" -ForegroundColor Green
         Write-Host ""
         Write-Host "Usage:" -ForegroundColor Cyan
         Write-Host "  $BinaryName --help                    # Show help"
@@ -246,7 +246,7 @@ function Main {
     $installMethod = Test-Dependencies
     
     Write-Host ""
-    Write-Info "Installing Image Optimizer RS..."
+    Write-Info "Installing Image Optimizer..."
     Write-Info "Install method: $installMethod"
     
     if ($installMethod -eq "binary") {

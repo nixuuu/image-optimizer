@@ -1,15 +1,15 @@
 [package]
-name = "image-optimizer-rs"
+name = "image-optimizer"
 version = "1.2.1"
 edition = "2024"
 description = "CLI tool for optimizing images (JPEG, PNG, WebP)"
 
 [[bin]]
-name = "image-optimizer-rs"
+name = "image-optimizer"
 path = "src/main.rs"
 
 [lib]
-name = "image_optimizer_rs"
+name = "image_optimizer"
 path = "src/lib.rs"
 
 [dependencies]

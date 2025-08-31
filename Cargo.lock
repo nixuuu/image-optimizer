@@ -882,7 +882,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "image-optimizer-rs"
+name = "image-optimizer"
 version = "1.2.1"
 dependencies = [
  "anyhow",

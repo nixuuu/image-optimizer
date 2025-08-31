@@ -25,7 +25,7 @@ fn test_cli_version() {
 
     assert!(output.status.success());
     let stdout = String::from_utf8_lossy(&output.stdout);
-    assert!(stdout.contains("image-optimizer-rs"));
+    assert!(stdout.contains("image-optimizer"));
 }
 
 #[test]
@@ -59,7 +59,7 @@ fn test_empty_directory() {
 
 #[cfg(test)]
 mod helper_tests {
-    use image_optimizer_rs::file_ops::{calculate_resize_dimensions, format_bytes};
+    use image_optimizer::file_ops::{calculate_resize_dimensions, format_bytes};
 
     #[test]
     fn test_byte_formatter_integration() {
