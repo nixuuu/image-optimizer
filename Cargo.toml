@@ -1,0 +1,16 @@
+[package]
+name = "image-optimizer-rs"
+version = "0.1.0"
+edition = "2021"
+description = "CLI tool for optimizing images (JPEG, PNG, WebP)"
+
+[dependencies]
+clap = { version = "4.0", features = ["derive"] }
+walkdir = "2.3"
+anyhow = "1.0"
+mozjpeg = "0.10.13"
+oxipng = { version = "9.0", features = ["zopfli"] }
+webp = "0.3"
+indicatif = "0.18"
+rayon = { version = "1.11" }
+image = "0.25"
