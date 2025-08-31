@@ -18,7 +18,7 @@ A fast, parallel CLI tool for optimizing images (JPEG, PNG, WebP) written in Rus
 ### Quick Install (Linux/macOS)
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/nixuuu/image-optimizer-rs/master/install.sh | bash
+curl -sSL https://raw.githubusercontent.com/nixuuu/image-optimizer-rs/refs/heads/master/install.sh | bash
 ```
 
 This script will:
