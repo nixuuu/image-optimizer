@@ -3,13 +3,13 @@ use std::path::PathBuf;
 use walkdir::WalkDir;
 
 /// List of supported image file extensions for optimization.
-const SUPPORTED_EXTENSIONS: &[&str] = &["jpg", "jpeg", "png", "webp"];
+const SUPPORTED_EXTENSIONS: &[&str] = &["jpg", "jpeg", "png", "webp", "svg"];
 
 /// Scans a directory or file for supported image formats.
 ///
 /// This function discovers image files that can be processed by the optimizer.
 /// It supports both single file input and directory scanning with optional recursion.
-/// Only files with supported extensions (JPEG, PNG, WebP) are returned.
+/// Only files with supported extensions (JPEG, PNG, WebP, SVG) are returned.
 ///
 /// # Arguments
 ///
@@ -26,6 +26,7 @@ const SUPPORTED_EXTENSIONS: &[&str] = &["jpg", "jpeg", "png", "webp"];
 /// - **JPEG**: `.jpg`, `.jpeg` (case-insensitive)
 /// - **PNG**: `.png` (case-insensitive)  
 /// - **WebP**: `.webp` (case-insensitive)
+/// - **SVG**: `.svg` (case-insensitive)
 ///
 /// # Examples
 ///
@@ -84,6 +85,7 @@ mod tests {
         assert!(SUPPORTED_EXTENSIONS.contains(&"jpeg"));
         assert!(SUPPORTED_EXTENSIONS.contains(&"png"));
         assert!(SUPPORTED_EXTENSIONS.contains(&"webp"));
+        assert!(SUPPORTED_EXTENSIONS.contains(&"svg"));
         assert!(!SUPPORTED_EXTENSIONS.contains(&"gif"));
         assert!(!SUPPORTED_EXTENSIONS.contains(&"txt"));
     }
@@ -128,6 +130,7 @@ mod tests {
             ("test_upper.JPEG", "jpeg"),
             ("test_upper.PNG", "png"),
             ("test_upper.WEBP", "webp"),
+            ("test_upper.SVG", "svg"),
         ];
 
         for (filename, _) in &test_files {

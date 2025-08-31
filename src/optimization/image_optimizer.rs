@@ -4,7 +4,7 @@ use std::ffi::OsStr;
 use std::fs;
 use std::path::Path;
 
-use super::{jpeg_optimizer, png_optimizer, webp_optimizer};
+use super::{jpeg_optimizer, png_optimizer, svg_optimizer, webp_optimizer};
 use crate::cli::Cli;
 use crate::file_ops::{calculate_resize_dimensions, create_backup, ensure_output_dir};
 
@@ -38,7 +38,9 @@ pub fn optimize_image(input_path: &Path, args: &Cli, input_dir: &Path) -> Result
         .unwrap_or("")
         .to_lowercase();
 
-    let img = if args.max_size.is_some() {
+    let img = if extension == "svg" {
+        None
+    } else if args.max_size.is_some() {
         let img = image::open(input_path)?;
         let (width, height) = (img.width(), img.height());
 
@@ -60,6 +62,7 @@ pub fn optimize_image(input_path: &Path, args: &Cli, input_dir: &Path) -> Result
         "jpg" | "jpeg" => jpeg_optimizer::optimize_jpeg(input_path, &output_path, args, img)?,
         "png" => png_optimizer::optimize_png(input_path, &output_path, args, img)?,
         "webp" => webp_optimizer::optimize_webp(input_path, &output_path, args, img)?,
+        "svg" => svg_optimizer::optimize_svg(input_path, &output_path, args, img)?,
         _ => return Err(anyhow::anyhow!("Unsupported file format: {}", extension)),
     }
 
