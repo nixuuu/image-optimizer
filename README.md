@@ -15,6 +15,27 @@ A fast, parallel CLI tool for optimizing images (JPEG, PNG, WebP) written in Rus
 
 ## Installation
 
+### System Dependencies
+
+This tool requires system libraries for JPEG optimization:
+
+**Ubuntu/Debian:**
+```bash
+sudo apt-get install libjpeg-dev
+```
+
+**macOS:**
+```bash
+brew install mozjpeg
+```
+
+**Fedora/RHEL:**
+```bash
+sudo dnf install libjpeg-turbo-devel
+```
+
+### Build
+
 ```bash
 cargo build --release
 ```
