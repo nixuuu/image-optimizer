@@ -9,7 +9,10 @@
       "Bash(cargo lint:*)",
       "Bash(cargo fix:*)",
       "Bash(git add:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(gh release list:*)",
+      "Bash(git tag:*)",
+      "Bash(gh release view:*)"
     ],
     "deny": [],
     "ask": []
