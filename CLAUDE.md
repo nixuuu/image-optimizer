@@ -8,11 +8,30 @@ A CLI image optimizer written in Rust that supports JPEG, PNG, and WebP formats.
 
 ## Architecture
 
-The codebase is organized into three main modules:
+**Code Organization Rule: One function/struct/trait per file**
 
-- `src/main.rs` - CLI argument parsing using clap, parallel processing coordination with rayon, and progress tracking with indicatif
-- `src/optimizer.rs` - Core optimization logic with format-specific functions for JPEG (mozjpeg), PNG (oxipng), and WebP 
-- `src/utils.rs` - Utility functions for file scanning, directory management, backup creation, and size calculations
+The codebase follows a strict modular architecture where each function, struct, or trait is defined in its own file. Modules are grouped by functionality:
+
+- `src/main.rs` - Main application entry point with parallel processing coordination and progress tracking
+- `src/cli/` - Command-line interface components
+  - `cli_args.rs` - Cli struct definition
+- `src/optimization/` - Image optimization functionality
+  - `image_optimizer.rs` - Main optimization orchestration function
+  - `jpeg_optimizer.rs` - JPEG-specific optimization using mozjpeg
+  - `png_optimizer.rs` - PNG optimization using oxipng with zopfli
+  - `webp_optimizer.rs` - WebP optimization functionality
+- `src/file_ops/` - File system operations and utilities
+  - `image_scanner.rs` - Directory scanning for image files
+  - `output_manager.rs` - Output directory management
+  - `backup_manager.rs` - Backup file creation
+  - `size_calculator.rs` - Image resize dimension calculations
+  - `byte_formatter.rs` - Human-readable byte size formatting
+- `src/updater/` - Self-update functionality
+  - `self_updater.rs` - Main update orchestration function
+  - `github_release.rs` - GitHub release data structures
+  - `platform_detector.rs` - Platform target detection
+  - `version_comparator.rs` - Version comparison logic
+  - `executable_manager.rs` - Current executable path management
 
 The application uses parallel processing via rayon to optimize multiple images concurrently, with a progress bar showing real-time status.
 

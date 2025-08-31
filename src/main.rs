@@ -2,56 +2,24 @@ use anyhow::Result;
 use clap::Parser;
 use indicatif::{ProgressBar, ProgressStyle};
 use rayon::prelude::*;
-use std::path::PathBuf;
 use std::sync::{Arc, Mutex};
 
-mod optimizer;
-mod utils;
+mod cli;
+mod optimization;
+mod file_ops;
+mod updater;
 
-#[derive(Parser)]
-#[command(name = "image-optimizer-rs")]
-#[command(about = "CLI tool for optimizing images (JPEG, PNG, WebP)")]
-#[command(version = env!("CARGO_PKG_VERSION"))]
-#[allow(clippy::struct_excessive_bools)]
-struct Cli {
-    /// Input directory to scan for images
-    #[arg(short, long)]
-    input: Option<PathBuf>,
+use cli::Cli;
+use optimization::optimize_image;
+use file_ops::{scan_images, format_bytes};
+use updater::update_self;
 
-    /// Output directory (if not specified, optimizes in place)
-    #[arg(short, long)]
-    output: Option<PathBuf>,
-
-    /// Create backup files (.bak)
-    #[arg(long)]
-    backup: bool,
-
-    /// Use lossless compression
-    #[arg(long)]
-    lossless: bool,
-
-    /// JPEG quality (1-100), ignored if lossless is set
-    #[arg(short, long, default_value = "85")]
-    quality: u8,
-
-    /// Recursively scan subdirectories
-    #[arg(short, long)]
-    recursive: bool,
-
-    /// Maximum size for the longer edge (resizes if larger)
-    #[arg(long)]
-    max_size: Option<u32>,
-
-    /// Update to the latest version
-    #[arg(long)]
-    update: bool,
-}
 
 fn main() -> Result<()> {
     let args = Cli::parse();
 
     if args.update {
-        return utils::update_self();
+        return update_self();
     }
 
     let input = args
@@ -71,7 +39,7 @@ fn main() -> Result<()> {
         return Err(anyhow::anyhow!("Input path must be a directory"));
     }
 
-    let image_files = utils::scan_images(input, args.recursive);
+    let image_files = scan_images(input, args.recursive);
 
     if image_files.is_empty() {
         println!("No image files found in the specified directory");
@@ -99,13 +67,17 @@ fn main() -> Result<()> {
             image_path.file_name().unwrap_or_default().to_string_lossy()
         ));
 
-        match optimizer::optimize_image(&image_path, &args, input) {
+        match optimize_image(&image_path, &args, input) {
             Ok(saved_bytes) => {
                 if saved_bytes > 0 {
-                    *total_saved.lock().unwrap() += saved_bytes;
-                    *processed.lock().unwrap() += 1;
-                } else {
-                    *skipped.lock().unwrap() += 1;
+                    if let Ok(mut saved) = total_saved.lock() {
+                        *saved += saved_bytes;
+                    }
+                    if let Ok(mut proc) = processed.lock() {
+                        *proc += 1;
+                    }
+                } else if let Ok(mut skip) = skipped.lock() {
+                    *skip += 1;
                 }
             }
             Err(e) => {
@@ -116,9 +88,9 @@ fn main() -> Result<()> {
         pb.inc(1);
     });
 
-    let total_saved = *total_saved.lock().unwrap();
-    let processed = *processed.lock().unwrap();
-    let skipped = *skipped.lock().unwrap();
+    let total_saved = total_saved.lock().map(|guard| *guard).unwrap_or(0);
+    let processed = processed.lock().map(|guard| *guard).unwrap_or(0);
+    let skipped = skipped.lock().map(|guard| *guard).unwrap_or(0);
 
     pb.finish_with_message("Optimization complete");
 
@@ -127,7 +99,7 @@ fn main() -> Result<()> {
         println!("Skipped {skipped} files (optimization would increase size)");
     }
     if total_saved > 0 {
-        println!("Total space saved: {}", utils::format_bytes(total_saved));
+        println!("Total space saved: {}", format_bytes(total_saved));
     }
 
     Ok(())
