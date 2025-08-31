@@ -15,6 +15,12 @@ A fast, parallel CLI tool for optimizing images (JPEG, PNG, WebP) written in Rus
 
 ## Installation
 
+### From crates.io (Recommended)
+
+```bash
+cargo install image-optimizer
+```
+
 ### Quick Install (Linux/macOS)
 
 ```bash
