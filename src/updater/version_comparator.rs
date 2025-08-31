@@ -24,7 +24,7 @@ use anyhow::Result;
 /// # Examples
 ///
 /// ```rust
-/// use image_optimizer::updater::compare_versions;
+/// use image_optimizer::updater::version_comparator::compare_versions;
 ///
 /// # fn example() -> anyhow::Result<()> {
 /// // Update available

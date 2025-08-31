@@ -20,7 +20,7 @@ use std::path::PathBuf;
 /// # Examples
 ///
 /// ```rust
-/// use image_optimizer::updater::get_current_executable;
+/// use image_optimizer::updater::executable_manager::get_current_executable;
 ///
 /// # fn example() -> anyhow::Result<()> {
 /// let exe_path = get_current_executable()?;

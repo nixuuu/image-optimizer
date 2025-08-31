@@ -18,6 +18,7 @@ use std::path::PathBuf;
 #[derive(Parser)]
 #[command(name = "image-optimizer")]
 #[command(about = "CLI tool for optimizing images (JPEG, PNG, WebP)")]
+#[command(long_about = None)]
 #[command(version = env!("CARGO_PKG_VERSION"))]
 #[allow(clippy::struct_excessive_bools)]
 pub struct Cli {

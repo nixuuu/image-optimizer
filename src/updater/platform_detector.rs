@@ -25,7 +25,7 @@ use anyhow::Result;
 /// # Examples
 ///
 /// ```rust
-/// use image_optimizer::updater::get_platform_target;
+/// use image_optimizer::updater::platform_detector::get_platform_target;
 ///
 /// # fn example() -> anyhow::Result<()> {
 /// let target = get_platform_target()?;
