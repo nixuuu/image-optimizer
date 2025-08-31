@@ -61,8 +61,12 @@ pub fn update_self() -> Result<()> {
         .map_err(|e| anyhow::anyhow!("Failed to create backup: {}", e))?;
 
     println!("🔄 Installing update...");
-    std::fs::write(&current_exe, binary_data)
+    let temp_exe = current_exe.with_extension("tmp");
+    std::fs::write(&temp_exe, binary_data)
         .map_err(|e| anyhow::anyhow!("Failed to write updated binary: {}", e))?;
+
+    std::fs::rename(&temp_exe, &current_exe)
+        .map_err(|e| anyhow::anyhow!("Failed to install updated binary: {}", e))?;
 
     #[cfg(unix)]
     {
