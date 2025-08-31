@@ -17,7 +17,7 @@ use std::path::PathBuf;
 /// ```
 #[derive(Parser)]
 #[command(name = "image-optimizer")]
-#[command(about = "CLI tool for optimizing images (JPEG, PNG, WebP)")]
+#[command(about = "CLI tool for optimizing images (JPEG, PNG, WebP, SVG)")]
 #[command(long_about = None)]
 #[command(version = env!("CARGO_PKG_VERSION"))]
 #[allow(clippy::struct_excessive_bools)]
@@ -38,7 +38,7 @@ pub struct Cli {
     #[arg(long)]
     pub lossless: bool,
 
-    /// JPEG quality (1-100), ignored if lossless is set
+    /// JPEG quality (1-100), ignored if lossless is set (applies to raster formats only)
     #[arg(short, long, default_value = "85")]
     pub quality: u8,
 
@@ -46,7 +46,7 @@ pub struct Cli {
     #[arg(short, long)]
     pub recursive: bool,
 
-    /// Maximum size for the longer edge (resizes if larger)
+    /// Maximum size for the longer edge (resizes if larger, applies to raster formats only)
     #[arg(long)]
     pub max_size: Option<u32>,
 

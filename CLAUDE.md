@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-A CLI image optimizer written in Rust that supports JPEG, PNG, and WebP formats. The tool can optimize images in-place or to a separate output directory, with options for resizing, quality adjustment, and creating backups.
+A CLI image optimizer written in Rust that supports JPEG, PNG, WebP, and SVG formats. The tool can optimize images in-place or to a separate output directory, with options for resizing, quality adjustment, and creating backups.
 
 ## Architecture
 
@@ -20,6 +20,7 @@ The codebase follows a strict modular architecture where each function, struct, 
   - `jpeg_optimizer.rs` - JPEG-specific optimization using mozjpeg
   - `png_optimizer.rs` - PNG optimization using oxipng with zopfli
   - `webp_optimizer.rs` - WebP optimization functionality
+  - `svg_optimizer.rs` - SVG optimization using regex-based processing
 - `src/file_ops/` - File system operations and utilities
   - `image_scanner.rs` - Directory scanning for image files
   - `output_manager.rs` - Output directory management
@@ -56,11 +57,11 @@ cargo run -- -i images --backup --lossless  # Create backups and use lossless co
 
 ## Key Features
 
-- Supports JPEG (mozjpeg), PNG (oxipng with zopfli), and WebP optimization
-- Optional image resizing with `--max-size` parameter
+- Supports JPEG (mozjpeg), PNG (oxipng with zopfli), WebP, and SVG optimization
+- Optional image resizing with `--max-size` parameter (raster formats only)
 - In-place optimization or separate output directory
 - Backup creation with `--backup` flag
-- Quality control (1-100) and lossless mode
+- Quality control (1-100) and lossless mode (raster formats only)
 - Parallel processing for batch operations
 - Progress tracking with file-by-file status
 

@@ -2,16 +2,16 @@
 //!
 //! A high-performance CLI tool for optimizing images written in Rust.
 //!
-//! This crate provides image optimization capabilities for JPEG, PNG, and WebP formats
+//! This crate provides image optimization capabilities for JPEG, PNG, WebP, and SVG formats
 //! with support for parallel processing, quality control, resizing, and backup creation.
 //!
 //! ## Features
 //!
-//! - **Multi-format support**: JPEG (mozjpeg), PNG (oxipng with zopfli), WebP
+//! - **Multi-format support**: JPEG (mozjpeg), PNG (oxipng with zopfli), WebP, SVG (regex-based)
 //! - **Parallel processing**: Concurrent optimization using rayon
 //! - **Flexible output**: In-place optimization or separate output directory
-//! - **Quality control**: Adjustable quality settings and lossless mode
-//! - **Image resizing**: Optional resizing with `--max-size` parameter
+//! - **Quality control**: Adjustable quality settings and lossless mode (raster formats only)
+//! - **Image resizing**: Optional resizing with `--max-size` parameter (raster formats only)
 //! - **Backup support**: Create backup files before optimization
 //! - **Progress tracking**: Real-time progress bar with file-by-file status
 //! - **Self-updating**: Built-in update mechanism via GitHub releases
