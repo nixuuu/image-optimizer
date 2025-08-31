@@ -5,15 +5,14 @@ use rayon::prelude::*;
 use std::sync::{Arc, Mutex};
 
 mod cli;
-mod optimization;
 mod file_ops;
+mod optimization;
 mod updater;
 
 use cli::Cli;
+use file_ops::{format_bytes, scan_images};
 use optimization::optimize_image;
-use file_ops::{scan_images, format_bytes};
 use updater::update_self;
-
 
 fn main() -> Result<()> {
     let args = Cli::parse();

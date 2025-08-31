@@ -1,9 +1,9 @@
 use anyhow::Result;
 
+use super::executable_manager::get_current_executable;
 use super::github_release::GitHubRelease;
 use super::platform_detector::get_platform_target;
 use super::version_comparator::compare_versions;
-use super::executable_manager::get_current_executable;
 
 const CURRENT_VERSION: &str = env!("CARGO_PKG_VERSION");
 const REPO_OWNER: &str = "nixuuu";

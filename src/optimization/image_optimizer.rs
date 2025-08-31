@@ -4,9 +4,9 @@ use std::ffi::OsStr;
 use std::fs;
 use std::path::Path;
 
-use crate::cli::Cli;
-use crate::file_ops::{create_backup, ensure_output_dir, calculate_resize_dimensions};
 use super::{jpeg_optimizer, png_optimizer, webp_optimizer};
+use crate::cli::Cli;
+use crate::file_ops::{calculate_resize_dimensions, create_backup, ensure_output_dir};
 
 pub fn optimize_image(input_path: &Path, args: &Cli, input_dir: &Path) -> Result<u64> {
     let original_size = fs::metadata(input_path)?.len();
@@ -40,8 +40,7 @@ pub fn optimize_image(input_path: &Path, args: &Cli, input_dir: &Path) -> Result
         let (width, height) = (img.width(), img.height());
 
         if let Some(max_size) = args.max_size {
-            let (new_width, new_height) =
-                calculate_resize_dimensions(width, height, max_size);
+            let (new_width, new_height) = calculate_resize_dimensions(width, height, max_size);
             if new_width != width || new_height != height {
                 Some(img.resize(new_width, new_height, image::imageops::FilterType::Lanczos3))
             } else {
