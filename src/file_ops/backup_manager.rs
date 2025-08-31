@@ -2,6 +2,10 @@ use anyhow::Result;
 use std::ffi::OsStr;
 use std::path::Path;
 
+/// Creates a backup file by copying the original with a .bak extension
+///
+/// # Errors
+/// Returns an error if the file copy operation fails
 pub fn create_backup(file_path: &Path) -> Result<()> {
     let backup_path = file_path.with_extension(format!(
         "{}.bak",

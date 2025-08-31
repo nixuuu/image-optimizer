@@ -1,6 +1,7 @@
 pub mod executable_manager;
 pub mod github_release;
 pub mod platform_detector;
+#[allow(clippy::module_name_repetitions)]
 pub mod self_updater;
 pub mod version_comparator;
 

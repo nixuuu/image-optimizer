@@ -9,6 +9,10 @@ const CURRENT_VERSION: &str = env!("CARGO_PKG_VERSION");
 const REPO_OWNER: &str = "nixuuu";
 const REPO_NAME: &str = "image-optimizer-rs";
 
+/// Downloads and installs the latest version from GitHub releases
+///
+/// # Errors
+/// Returns an error if network requests fail, platform is unsupported, or file operations fail
 pub fn update_self() -> Result<()> {
     println!("🔍 Checking for updates...");
     println!("Current version: v{CURRENT_VERSION}");

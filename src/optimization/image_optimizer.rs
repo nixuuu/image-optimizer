@@ -8,6 +8,10 @@ use super::{jpeg_optimizer, png_optimizer, webp_optimizer};
 use crate::cli::Cli;
 use crate::file_ops::{calculate_resize_dimensions, create_backup, ensure_output_dir};
 
+/// Optimizes an image file using the appropriate format-specific optimizer
+///
+/// # Errors
+/// Returns an error if file I/O operations fail, image processing fails, or unsupported format
 pub fn optimize_image(input_path: &Path, args: &Cli, input_dir: &Path) -> Result<u64> {
     let original_size = fs::metadata(input_path)?.len();
 

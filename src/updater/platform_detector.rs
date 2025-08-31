@@ -1,5 +1,9 @@
 use anyhow::Result;
 
+/// Detects the current platform target for binary downloads
+///
+/// # Errors
+/// Returns an error if the current platform is unsupported
 pub fn get_platform_target() -> Result<String> {
     let os = std::env::consts::OS;
     let arch = std::env::consts::ARCH;

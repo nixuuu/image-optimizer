@@ -5,6 +5,10 @@ use std::path::Path;
 
 use crate::cli::Cli;
 
+/// Optimizes a JPEG image using mozjpeg compression
+///
+/// # Errors
+/// Returns an error if JPEG compression fails or file I/O operations fail
 pub fn optimize_jpeg(
     input_path: &Path,
     output_path: &Path,

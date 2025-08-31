@@ -5,6 +5,10 @@ use std::path::Path;
 
 use crate::cli::Cli;
 
+/// Optimizes a PNG image using oxipng with zopfli compression
+///
+/// # Errors
+/// Returns an error if PNG optimization fails or file I/O operations fail
 pub fn optimize_png(
     input_path: &Path,
     output_path: &Path,

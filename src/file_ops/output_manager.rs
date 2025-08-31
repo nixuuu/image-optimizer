@@ -1,6 +1,10 @@
 use anyhow::Result;
 use std::path::{Path, PathBuf};
 
+/// Ensures the output directory structure exists and returns the output file path
+///
+/// # Errors
+/// Returns an error if directory creation fails or path operations are invalid
 pub fn ensure_output_dir(
     output_path: &Path,
     input_path: &Path,

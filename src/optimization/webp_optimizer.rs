@@ -5,6 +5,10 @@ use std::path::Path;
 
 use crate::cli::Cli;
 
+/// Optimizes a WebP image with configurable quality and lossless options
+///
+/// # Errors
+/// Returns an error if WebP encoding fails or file I/O operations fail
 pub fn optimize_webp(
     input_path: &Path,
     output_path: &Path,

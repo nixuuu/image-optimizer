@@ -4,6 +4,14 @@ version = "1.2.1"
 edition = "2024"
 description = "CLI tool for optimizing images (JPEG, PNG, WebP)"
 
+[[bin]]
+name = "image-optimizer-rs"
+path = "src/main.rs"
+
+[lib]
+name = "image_optimizer_rs"
+path = "src/lib.rs"
+
 [dependencies]
 clap = { version = "4.0", features = ["derive"] }
 walkdir = "2.3"
