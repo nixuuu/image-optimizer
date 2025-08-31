@@ -15,14 +15,13 @@ pub fn optimize_image(input_path: &Path, args: &Cli, input_dir: &Path) -> Result
     let output_path = if let Some(ref output_dir) = args.output {
         ensure_output_dir(output_dir, input_dir, input_path)?
     } else {
-        let temp_path = input_path.with_extension(format!(
+        input_path.with_extension(format!(
             "tmp.{}",
             input_path
                 .extension()
                 .and_then(OsStr::to_str)
                 .unwrap_or("jpg")
-        ));
-        temp_path
+        ))
     };
 
     if args.backup && is_in_place {

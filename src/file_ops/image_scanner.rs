@@ -8,10 +8,10 @@ pub fn scan_images(path: &std::path::Path, recursive: bool) -> Vec<PathBuf> {
     let mut image_files = Vec::new();
 
     if path.is_file() {
-        if let Some(extension) = path.extension().and_then(OsStr::to_str) {
-            if SUPPORTED_EXTENSIONS.contains(&extension.to_lowercase().as_str()) {
-                image_files.push(path.to_path_buf());
-            }
+        if let Some(extension) = path.extension().and_then(OsStr::to_str)
+            && SUPPORTED_EXTENSIONS.contains(&extension.to_lowercase().as_str())
+        {
+            image_files.push(path.to_path_buf());
         }
         return image_files;
     }
@@ -23,12 +23,11 @@ pub fn scan_images(path: &std::path::Path, recursive: bool) -> Vec<PathBuf> {
     };
 
     for entry in walker.into_iter().filter_map(Result::ok) {
-        if entry.file_type().is_file() {
-            if let Some(extension) = entry.path().extension().and_then(OsStr::to_str) {
-                if SUPPORTED_EXTENSIONS.contains(&extension.to_lowercase().as_str()) {
-                    image_files.push(entry.path().to_path_buf());
-                }
-            }
+        if entry.file_type().is_file()
+            && let Some(extension) = entry.path().extension().and_then(OsStr::to_str)
+            && SUPPORTED_EXTENSIONS.contains(&extension.to_lowercase().as_str())
+        {
+            image_files.push(entry.path().to_path_buf());
         }
     }
 

@@ -67,3 +67,15 @@ cargo run -- -i images --backup --lossless  # Create backups and use lossless co
 ## Test Data
 
 The `test/images/` directory contains hundreds of sample JPEG files for testing the optimizer with real image data.
+
+## Code Quality Requirements
+
+After making any code changes, always run these commands in sequence to ensure code quality:
+
+1. **Format Check**: Run `cargo fmt --check` to verify formatting
+   - If it fails, run `cargo fmt` to apply automatic formatting
+2. **Linting**: Run `cargo lint` to check for code issues
+   - If it fails, run `cargo fix-lint` to apply automatic fixes, then run `cargo lint` again
+3. **Final Verification**: Ensure all formatting and linting passes without errors or warnings
+
+This workflow ensures consistent code style and catches potential issues before committing changes.
