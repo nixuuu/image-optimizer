@@ -15,7 +15,20 @@ A fast, parallel CLI tool for optimizing images (JPEG, PNG, WebP) written in Rus
 
 ## Installation
 
-### System Dependencies
+### Quick Install (Linux/macOS)
+
+```bash
+curl -sSL https://raw.githubusercontent.com/nixuuu/image-optimizer-rs/master/install.sh | bash
+```
+
+This script will:
+- Detect your platform and architecture
+- Download prebuilt binaries (if available) or build from source
+- Install to `~/.local/bin` and configure your PATH
+
+### Manual Installation
+
+#### System Dependencies
 
 This tool requires system libraries for JPEG optimization:
 
@@ -34,9 +47,11 @@ brew install mozjpeg
 sudo dnf install libjpeg-turbo-devel
 ```
 
-### Build
+#### Build from Source
 
 ```bash
+git clone https://github.com/nixuuu/image-optimizer-rs.git
+cd image-optimizer-rs
 cargo build --release
 ```
 
