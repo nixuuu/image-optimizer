@@ -5,14 +5,46 @@ use super::github_release::GitHubRelease;
 use super::platform_detector::get_platform_target;
 use super::version_comparator::compare_versions;
 
+/// Current version of the application from Cargo.toml.
 const CURRENT_VERSION: &str = env!("CARGO_PKG_VERSION");
+
+/// GitHub repository owner for fetching releases.
 const REPO_OWNER: &str = "nixuuu";
+
+/// GitHub repository name for fetching releases.
 const REPO_NAME: &str = "image-optimizer";
 
-/// Downloads and installs the latest version from GitHub releases
+/// Downloads and installs the latest version from GitHub releases.
+///
+/// This function performs a complete self-update process including:
+/// 1. Checking the latest release via GitHub API
+/// 2. Comparing versions to determine if an update is needed
+/// 3. Downloading the appropriate binary for the current platform
+/// 4. Creating a backup of the current executable
+/// 5. Installing the new version with proper permissions
+///
+/// The update process is atomic - if any step fails, the original binary remains unchanged.
+/// A backup is always created before replacement for safety.
+///
+/// # Returns
+///
+/// Returns `Ok(())` on successful update or if already up-to-date.
 ///
 /// # Errors
-/// Returns an error if network requests fail, platform is unsupported, or file operations fail
+///
+/// Returns an error if:
+/// - Network requests to GitHub API fail
+/// - Platform is unsupported for automatic updates
+/// - File operations fail (backup creation, binary replacement)
+/// - Downloaded binary is corrupted or invalid
+/// - Permission changes fail on Unix systems
+///
+/// # Platform Support
+///
+/// Supports automatic updates on:
+/// - Linux (x86_64, aarch64)
+/// - macOS (x86_64, Apple Silicon)
+/// - Windows (x86_64)
 pub fn update_self() -> Result<()> {
     println!("🔍 Checking for updates...");
     println!("Current version: v{CURRENT_VERSION}");

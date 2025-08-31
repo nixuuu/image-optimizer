@@ -5,10 +5,29 @@ use std::path::Path;
 
 use crate::cli::Cli;
 
-/// Optimizes a WebP image with configurable quality and lossless options
+/// Optimizes a WebP image with configurable quality and lossless options.
+///
+/// This function uses Google's WebP encoder to create optimized WebP images.
+/// It supports both lossy compression with quality control and lossless compression
+/// mode for maximum quality preservation.
+///
+/// # Arguments
+///
+/// * `input_path` - Path to the source WebP file
+/// * `output_path` - Path where the optimized WebP will be written
+/// * `args` - CLI configuration containing quality settings and lossless flag
+/// * `resized_img` - Optional pre-resized image data; if None, reads from input_path
+///
+/// # Returns
+///
+/// Returns `Ok(())` on successful optimization.
 ///
 /// # Errors
-/// Returns an error if WebP encoding fails or file I/O operations fail
+///
+/// Returns an error if:
+/// - WebP encoding fails
+/// - File I/O operations fail (reading input or writing output)
+/// - Image format conversion to RGB8 fails
 pub fn optimize_webp(
     input_path: &Path,
     output_path: &Path,

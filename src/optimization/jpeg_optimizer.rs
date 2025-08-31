@@ -5,10 +5,30 @@ use std::path::Path;
 
 use crate::cli::Cli;
 
-/// Optimizes a JPEG image using mozjpeg compression
+/// Optimizes a JPEG image using mozjpeg compression.
+///
+/// This function uses the mozjpeg library to achieve superior compression compared to
+/// standard libjpeg implementations. It supports both quality-based compression and
+/// lossless mode, and can work with either the original image data or a pre-resized image.
+///
+/// # Arguments
+///
+/// * `input_path` - Path to the source JPEG file
+/// * `output_path` - Path where the optimized JPEG will be written
+/// * `args` - CLI configuration containing quality settings and lossless flag
+/// * `resized_img` - Optional pre-resized image data; if None, reads from input_path
+///
+/// # Returns
+///
+/// Returns `Ok(())` on successful optimization.
 ///
 /// # Errors
-/// Returns an error if JPEG compression fails or file I/O operations fail
+///
+/// Returns an error if:
+/// - JPEG decompression or compression fails
+/// - File I/O operations fail (reading input or writing output)
+/// - Image dimensions are too large to convert to u32
+/// - RGB color space conversion fails
 pub fn optimize_jpeg(
     input_path: &Path,
     output_path: &Path,

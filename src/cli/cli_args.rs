@@ -1,6 +1,20 @@
 use clap::Parser;
 use std::path::PathBuf;
 
+/// Command-line interface configuration for the image optimizer tool.
+///
+/// This struct defines all available command-line arguments and flags for the image optimization
+/// tool. It uses the `clap` crate for parsing and validation of command-line arguments.
+///
+/// ## Examples
+///
+/// ```rust
+/// use image_optimizer::cli::Cli;
+/// use clap::Parser;
+///
+/// // Parse CLI arguments
+/// let cli = Cli::parse();
+/// ```
 #[derive(Parser)]
 #[command(name = "image-optimizer")]
 #[command(about = "CLI tool for optimizing images (JPEG, PNG, WebP)")]

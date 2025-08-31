@@ -1,9 +1,42 @@
 use anyhow::Result;
 
-/// Compares two semantic version strings to determine if an update is available
+/// Compares two semantic version strings to determine if an update is available.
+///
+/// This function implements semantic version comparison following the semver specification.
+/// It automatically strips 'v' prefixes and compares major.minor.patch version numbers.
+/// The comparison determines whether the latest version is newer than the current version.
+///
+/// # Arguments
+///
+/// * `current` - The current version string (e.g., "1.2.1" or "v1.2.1")
+/// * `latest` - The latest available version string (e.g., "1.2.2" or "v1.2.2")
+///
+/// # Returns
+///
+/// Returns `true` if the latest version is newer than the current version,
+/// `false` if the current version is newer or equal to the latest version.
 ///
 /// # Errors
-/// Returns an error if either version string has invalid format
+///
+/// Returns an error if either version string cannot be parsed as a valid
+/// semantic version (must contain numeric parts separated by dots).
+///
+/// # Examples
+///
+/// ```rust
+/// use image_optimizer::updater::compare_versions;
+///
+/// # fn example() -> anyhow::Result<()> {
+/// // Update available
+/// assert!(compare_versions("1.0.0", "1.0.1")?);
+/// assert!(compare_versions("v1.0.0", "v1.1.0")?);
+///
+/// // No update needed
+/// assert!(!compare_versions("1.0.1", "1.0.0")?);
+/// assert!(!compare_versions("1.0.0", "1.0.0")?);
+/// # Ok(())
+/// # }
+/// ```
 pub fn compare_versions(current: &str, latest: &str) -> Result<bool> {
     let current_clean = current.trim_start_matches('v');
     let latest_clean = latest.trim_start_matches('v');

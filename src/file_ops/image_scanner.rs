@@ -2,8 +2,46 @@ use std::ffi::OsStr;
 use std::path::PathBuf;
 use walkdir::WalkDir;
 
+/// List of supported image file extensions for optimization.
 const SUPPORTED_EXTENSIONS: &[&str] = &["jpg", "jpeg", "png", "webp"];
 
+/// Scans a directory or file for supported image formats.
+///
+/// This function discovers image files that can be processed by the optimizer.
+/// It supports both single file input and directory scanning with optional recursion.
+/// Only files with supported extensions (JPEG, PNG, WebP) are returned.
+///
+/// # Arguments
+///
+/// * `path` - Path to scan (can be a file or directory)
+/// * `recursive` - Whether to recursively scan subdirectories (ignored for single files)
+///
+/// # Returns
+///
+/// A vector of `PathBuf` containing all discovered image files with supported formats.
+/// Returns an empty vector if no supported images are found or if the path doesn't exist.
+///
+/// # Supported Formats
+///
+/// - **JPEG**: `.jpg`, `.jpeg` (case-insensitive)
+/// - **PNG**: `.png` (case-insensitive)  
+/// - **WebP**: `.webp` (case-insensitive)
+///
+/// # Examples
+///
+/// ```rust
+/// use std::path::Path;
+/// use image_optimizer::file_ops::scan_images;
+///
+/// // Scan a single file
+/// let images = scan_images(Path::new("photo.jpg"), false);
+///
+/// // Scan directory recursively
+/// let images = scan_images(Path::new("./photos"), true);
+///
+/// // Scan directory non-recursively
+/// let images = scan_images(Path::new("./photos"), false);
+/// ```
 pub fn scan_images(path: &std::path::Path, recursive: bool) -> Vec<PathBuf> {
     let mut image_files = Vec::new();
 

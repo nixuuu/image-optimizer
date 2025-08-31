@@ -14,6 +14,30 @@ use file_ops::{format_bytes, scan_images};
 use optimization::optimize_image;
 use updater::update_self;
 
+/// Main entry point for the image optimizer CLI application.
+///
+/// This function coordinates the entire optimization process including:
+/// - Command-line argument parsing
+/// - Input validation
+/// - Image file discovery
+/// - Parallel optimization with progress tracking
+/// - Results summary display
+///
+/// The application supports self-updating, batch processing with parallel execution,
+/// and comprehensive error handling.
+///
+/// # Returns
+///
+/// Returns `Ok(())` on successful completion or an error if any critical operation fails.
+///
+/// # Errors
+///
+/// Returns an error if:
+/// - Required input parameters are missing
+/// - Input file or directory doesn't exist
+/// - Quality parameter is out of range (1-100)
+/// - Progress bar template formatting fails
+/// - Any critical file I/O operations fail
 fn main() -> Result<()> {
     let args = Cli::parse();
 
