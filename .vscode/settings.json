@@ -1,0 +1,11 @@
+{
+    "rust-analyzer.check.command": "clippy",
+    "rust-analyzer.check.extraArgs": ["--", "-W", "clippy::all", "-W", "clippy::pedantic", "-W", "clippy::nursery"],
+    "rust-analyzer.rustfmt.extraArgs": ["--config-path", "./rustfmt.toml"],
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "rust-lang.rust-analyzer",
+    "[rust]": {
+        "editor.defaultFormatter": "rust-lang.rust-analyzer",
+        "editor.formatOnSave": true
+    }
+}

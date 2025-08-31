@@ -1,0 +1,6 @@
+[alias]
+lint = "clippy -- -W clippy::all -W clippy::pedantic -W clippy::nursery"
+fix-lint = "clippy --fix --allow-dirty --allow-staged"
+
+[build]
+rustflags = ["-D", "warnings"]
