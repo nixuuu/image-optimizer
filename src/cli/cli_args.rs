@@ -7,7 +7,7 @@ use std::path::PathBuf;
 #[command(version = env!("CARGO_PKG_VERSION"))]
 #[allow(clippy::struct_excessive_bools)]
 pub struct Cli {
-    /// Input directory to scan for images
+    /// Input directory or file to process
     #[arg(short, long)]
     pub input: Option<PathBuf>,
 

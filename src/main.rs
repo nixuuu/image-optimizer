@@ -24,24 +24,24 @@ fn main() -> Result<()> {
     let input = args
         .input
         .as_ref()
-        .ok_or_else(|| anyhow::anyhow!("Input directory is required"))?;
+        .ok_or_else(|| anyhow::anyhow!("Input file or directory is required"))?;
 
     if args.quality > 100 {
         return Err(anyhow::anyhow!("Quality must be between 1 and 100"));
     }
 
     if !input.exists() {
-        return Err(anyhow::anyhow!("Input directory does not exist"));
-    }
-
-    if !input.is_dir() {
-        return Err(anyhow::anyhow!("Input path must be a directory"));
+        return Err(anyhow::anyhow!("Input file or directory does not exist"));
     }
 
     let image_files = scan_images(input, args.recursive);
 
     if image_files.is_empty() {
-        println!("No image files found in the specified directory");
+        if input.is_file() {
+            println!("The specified file is not a supported image format");
+        } else {
+            println!("No image files found in the specified directory");
+        }
         return Ok(());
     }
 

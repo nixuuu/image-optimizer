@@ -4,13 +4,22 @@ use walkdir::WalkDir;
 
 const SUPPORTED_EXTENSIONS: &[&str] = &["jpg", "jpeg", "png", "webp"];
 
-pub fn scan_images(dir: &std::path::Path, recursive: bool) -> Vec<PathBuf> {
+pub fn scan_images(path: &std::path::Path, recursive: bool) -> Vec<PathBuf> {
     let mut image_files = Vec::new();
 
+    if path.is_file() {
+        if let Some(extension) = path.extension().and_then(OsStr::to_str) {
+            if SUPPORTED_EXTENSIONS.contains(&extension.to_lowercase().as_str()) {
+                image_files.push(path.to_path_buf());
+            }
+        }
+        return image_files;
+    }
+
     let walker = if recursive {
-        WalkDir::new(dir)
+        WalkDir::new(path)
     } else {
-        WalkDir::new(dir).max_depth(1)
+        WalkDir::new(path).max_depth(1)
     };
 
     for entry in walker.into_iter().filter_map(Result::ok) {
