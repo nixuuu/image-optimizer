@@ -9,13 +9,13 @@ mod optimizer;
 mod utils;
 
 #[derive(Parser)]
-#[command(name = "image-optimizer")]
+#[command(name = "image-optimizer-rs")]
 #[command(about = "CLI tool for optimizing images (JPEG, PNG, WebP)")]
-#[command(version = "0.1.0")]
+#[command(version = env!("CARGO_PKG_VERSION"))]
 struct Cli {
     /// Input directory to scan for images
     #[arg(short, long)]
-    input: PathBuf,
+    input: Option<PathBuf>,
 
     /// Output directory (if not specified, optimizes in place)
     #[arg(short, long)]
@@ -40,24 +40,34 @@ struct Cli {
     /// Maximum size for the longer edge (resizes if larger)
     #[arg(long)]
     max_size: Option<u32>,
+
+    /// Update to the latest version
+    #[arg(long)]
+    update: bool,
 }
 
 fn main() -> Result<()> {
     let args = Cli::parse();
 
+    if args.update {
+        return utils::update_self();
+    }
+
+    let input = args.input.as_ref().ok_or_else(|| anyhow::anyhow!("Input directory is required"))?;
+
     if args.quality > 100 {
         return Err(anyhow::anyhow!("Quality must be between 1 and 100"));
     }
 
-    if !args.input.exists() {
+    if !input.exists() {
         return Err(anyhow::anyhow!("Input directory does not exist"));
     }
 
-    if !args.input.is_dir() {
+    if !input.is_dir() {
         return Err(anyhow::anyhow!("Input path must be a directory"));
     }
 
-    let image_files = utils::scan_images(&args.input, args.recursive)?;
+    let image_files = utils::scan_images(&input, args.recursive)?;
     
     if image_files.is_empty() {
         println!("No image files found in the specified directory");
@@ -80,7 +90,7 @@ fn main() -> Result<()> {
     image_files.into_par_iter().for_each(|image_path| {
         pb.set_message(format!("Processing: {}", image_path.file_name().unwrap_or_default().to_string_lossy()));
         
-        match optimizer::optimize_image(&image_path, &args) {
+        match optimizer::optimize_image(&image_path, &args, input) {
             Ok(saved_bytes) => {
                 if saved_bytes > 0 {
                     *total_saved.lock().unwrap() += saved_bytes;

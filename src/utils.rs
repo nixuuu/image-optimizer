@@ -1,4 +1,5 @@
 use anyhow::Result;
+use serde::Deserialize;
 use std::ffi::OsStr;
 use std::path::{Path, PathBuf};
 use walkdir::WalkDir;
@@ -79,4 +80,135 @@ pub fn calculate_resize_dimensions(width: u32, height: u32, max_size: u32) -> (u
     let new_height = (height as f64 * scale_factor).round() as u32;
     
     (new_width, new_height)
+}
+
+#[derive(Deserialize)]
+struct GitHubRelease {
+    tag_name: String,
+    assets: Vec<GitHubAsset>,
+}
+
+#[derive(Deserialize)]
+struct GitHubAsset {
+    name: String,
+    browser_download_url: String,
+}
+
+const CURRENT_VERSION: &str = env!("CARGO_PKG_VERSION");
+const REPO_OWNER: &str = "nixuuu";
+const REPO_NAME: &str = "image-optimizer-rs";
+
+fn get_platform_target() -> Result<String> {
+    let os = std::env::consts::OS;
+    let arch = std::env::consts::ARCH;
+    
+    let target = match (os, arch) {
+        ("linux", "x86_64") => "x86_64-unknown-linux-gnu",
+        ("linux", "aarch64") => "aarch64-unknown-linux-gnu",
+        ("macos", "x86_64") => "x86_64-apple-darwin",
+        ("macos", "aarch64") => "aarch64-apple-darwin",
+        ("windows", "x86_64") => "x86_64-pc-windows-msvc",
+        _ => return Err(anyhow::anyhow!("Unsupported platform: {}-{}", os, arch)),
+    };
+    
+    Ok(target.to_string())
+}
+
+fn compare_versions(current: &str, latest: &str) -> Result<bool> {
+    let current_clean = current.trim_start_matches('v');
+    let latest_clean = latest.trim_start_matches('v');
+    
+    let parse_version = |v: &str| -> Result<Vec<u32>> {
+        v.split('.')
+            .map(|part| part.parse::<u32>().map_err(|e| anyhow::anyhow!("Invalid version format: {}", e)))
+            .collect()
+    };
+    
+    let current_parts = parse_version(current_clean)?;
+    let latest_parts = parse_version(latest_clean)?;
+    
+    // Compare version parts (major.minor.patch)
+    for (curr, latest) in current_parts.iter().zip(latest_parts.iter()) {
+        if latest > curr {
+            return Ok(true); // Update available
+        } else if curr > latest {
+            return Ok(false); // Current is newer
+        }
+    }
+    
+    // If all compared parts are equal, check if latest has more parts
+    Ok(latest_parts.len() > current_parts.len())
+}
+
+fn get_current_executable() -> Result<PathBuf> {
+    std::env::current_exe()
+        .map_err(|e| anyhow::anyhow!("Failed to get current executable path: {}", e))
+}
+
+pub fn update_self() -> Result<()> {
+    println!("🔍 Checking for updates...");
+    println!("Current version: v{}", CURRENT_VERSION);
+    
+    let client = reqwest::blocking::Client::new();
+    let url = format!("https://api.github.com/repos/{}/{}/releases/latest", REPO_OWNER, REPO_NAME);
+    
+    let response = client
+        .get(&url)
+        .header("User-Agent", format!("{}/{}", REPO_NAME, CURRENT_VERSION))
+        .send()
+        .map_err(|e| anyhow::anyhow!("Failed to check for updates: {}", e))?;
+    
+    let release: GitHubRelease = response
+        .json()
+        .map_err(|e| anyhow::anyhow!("Failed to parse release information: {}", e))?;
+    
+    println!("Latest version: {}", release.tag_name);
+    
+    if !compare_versions(CURRENT_VERSION, &release.tag_name)? {
+        println!("✅ You're already running the latest version!");
+        return Ok(());
+    }
+    
+    println!("📦 New version available: {}", release.tag_name);
+    
+    let target = get_platform_target()?;
+    let binary_name = format!("image-optimizer-rs-{}", target);
+    
+    let asset = release.assets
+        .iter()
+        .find(|asset| asset.name == binary_name)
+        .ok_or_else(|| anyhow::anyhow!("No binary found for platform: {}", target))?;
+    
+    println!("⬇️  Downloading update...");
+    
+    let binary_data = client
+        .get(&asset.browser_download_url)
+        .send()
+        .map_err(|e| anyhow::anyhow!("Failed to download update: {}", e))?
+        .bytes()
+        .map_err(|e| anyhow::anyhow!("Failed to read update data: {}", e))?;
+    
+    let current_exe = get_current_executable()?;
+    let backup_path = current_exe.with_extension("bak");
+    
+    println!("💾 Creating backup...");
+    std::fs::copy(&current_exe, &backup_path)
+        .map_err(|e| anyhow::anyhow!("Failed to create backup: {}", e))?;
+    
+    println!("🔄 Installing update...");
+    std::fs::write(&current_exe, binary_data)
+        .map_err(|e| anyhow::anyhow!("Failed to write updated binary: {}", e))?;
+    
+    #[cfg(unix)]
+    {
+        use std::os::unix::fs::PermissionsExt;
+        let mut perms = std::fs::metadata(&current_exe)?.permissions();
+        perms.set_mode(0o755);
+        std::fs::set_permissions(&current_exe, perms)?;
+    }
+    
+    println!("✅ Successfully updated to {}!", release.tag_name);
+    println!("📁 Backup saved to: {}", backup_path.display());
+    
+    Ok(())
 }

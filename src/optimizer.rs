@@ -6,12 +6,12 @@ use std::path::Path;
 
 use crate::{utils, Cli};
 
-pub fn optimize_image(input_path: &Path, args: &Cli) -> Result<u64> {
+pub fn optimize_image(input_path: &Path, args: &Cli, input_dir: &Path) -> Result<u64> {
     let original_size = fs::metadata(input_path)?.len();
     
     let is_in_place = args.output.is_none();
     let output_path = if let Some(ref output_dir) = args.output {
-        utils::ensure_output_dir(output_dir, &args.input, input_path)?
+        utils::ensure_output_dir(output_dir, input_dir, input_path)?
     } else {
         let temp_path = input_path.with_extension(format!("tmp.{}", 
             input_path.extension().and_then(OsStr::to_str).unwrap_or("jpg")));

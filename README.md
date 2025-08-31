@@ -69,6 +69,9 @@ image-optimizer-rs -i images --backup --lossless
 
 # Resize images to max 1920px on longer edge
 image-optimizer-rs -i photos --max-size 1920
+
+# Update to the latest version
+image-optimizer-rs --update
 ```
 
 ### Options
@@ -80,6 +83,7 @@ image-optimizer-rs -i photos --max-size 1920
 - `-q, --quality <1-100>` - JPEG quality (default: 85, ignored if lossless)
 - `-r, --recursive` - Recursively scan subdirectories
 - `--max-size <PIXELS>` - Maximum size for longer edge (resizes if larger)
+- `--update` - Update to the latest version from GitHub releases
 
 ## Supported Formats
 
