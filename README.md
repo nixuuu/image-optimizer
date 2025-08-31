@@ -18,7 +18,7 @@ A fast, parallel CLI tool for optimizing images (JPEG, PNG, WebP) written in Rus
 ### Quick Install (Linux/macOS)
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/nixuuu/image-optimizer-rs/refs/heads/master/install.sh | bash
+curl -sSL https://raw.githubusercontent.com/nixuuu/image-optimizer/refs/heads/master/install.sh | bash
 ```
 
 This script will:
@@ -50,8 +50,8 @@ sudo dnf install libjpeg-turbo-devel
 #### Build from Source
 
 ```bash
-git clone https://github.com/nixuuu/image-optimizer-rs.git
-cd image-optimizer-rs
+git clone https://github.com/nixuuu/image-optimizer.git
+cd image-optimizer
 cargo build --release
 ```
 
@@ -59,19 +59,19 @@ cargo build --release
 
 ```bash
 # Basic usage - optimize images in place
-image-optimizer-rs -i ./images -r
+image-optimizer -i ./images -r
 
 # Optimize to output directory with custom quality
-image-optimizer-rs -i input_dir -o output_dir --quality 90
+image-optimizer -i input_dir -o output_dir --quality 90
 
 # Create backups and use lossless compression
-image-optimizer-rs -i images --backup --lossless
+image-optimizer -i images --backup --lossless
 
 # Resize images to max 1920px on longer edge
-image-optimizer-rs -i photos --max-size 1920
+image-optimizer -i photos --max-size 1920
 
 # Update to the latest version
-image-optimizer-rs --update
+image-optimizer --update
 ```
 
 ### Options
