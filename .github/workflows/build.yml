@@ -101,17 +101,17 @@ jobs:
         run: |
           mkdir -p artifacts
           if [ "${{ matrix.os }}" = "windows-latest" ]; then
-            cp target/${{ matrix.target }}/release/image-optimizer-rs${{ matrix.binary_suffix }} artifacts/image-optimizer-rs-${{ matrix.target }}${{ matrix.binary_suffix }}
+            cp target/${{ matrix.target }}/release/image-optimizer${{ matrix.binary_suffix }} artifacts/image-optimizer-${{ matrix.target }}${{ matrix.binary_suffix }}
           else
-            cp target/${{ matrix.target }}/release/image-optimizer-rs artifacts/image-optimizer-rs-${{ matrix.target }}
+            cp target/${{ matrix.target }}/release/image-optimizer artifacts/image-optimizer-${{ matrix.target }}
           fi
         shell: bash
 
       - name: Upload binary artifact
         uses: actions/upload-artifact@v4
         with:
-          name: image-optimizer-rs-${{ matrix.target }}
-          path: artifacts/image-optimizer-rs-${{ matrix.target }}${{ matrix.binary_suffix }}
+          name: image-optimizer-${{ matrix.target }}
+          path: artifacts/image-optimizer-${{ matrix.target }}${{ matrix.binary_suffix }}
           retention-days: 30
 
   release:
