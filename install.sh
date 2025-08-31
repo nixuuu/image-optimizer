@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set -euo pipefail
 
 REPO_URL="https://github.com/nixuuu/image-optimizer-rs"
 BINARY_NAME="image-optimizer-rs"
@@ -121,10 +121,12 @@ install_from_binary() {
             ;;
     esac
     
-    download_url=$(grep -o "\"browser_download_url\".*image-optimizer-rs-${target}\"" "$temp_dir/release.json" | cut -d'"' -f4 | head -n1)
+    download_url=$(grep -o "\"browser_download_url\".*image-optimizer-rs-${target}\"" "$temp_dir/release.json" | cut -d'"' -f4 | head -n1 || true)
     
     if [ -z "$download_url" ]; then
-        print_error "No prebuilt binary found for $OS-$ARCH"
+        print_error "No prebuilt binary found for $target ($OS-$ARCH)"
+        print_info "Available binaries:"
+        grep -o "\"name\":\"image-optimizer-rs-[^\"]*\"" "$temp_dir/release.json" | cut -d'"' -f4 || true
         return 1
     fi
     
@@ -240,6 +242,7 @@ main() {
     
     echo
     print_info "Installing Image Optimizer RS..."
+    print_info "Install method: $INSTALL_METHOD"
     
     if [ "$INSTALL_METHOD" = "binary" ]; then
         if ! install_from_binary; then
