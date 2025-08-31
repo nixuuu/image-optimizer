@@ -1,7 +1,7 @@
 //! # Image Optimizer
 //!
 //! A high-performance CLI tool for optimizing images written in Rust.
-//! 
+//!
 //! This crate provides image optimization capabilities for JPEG, PNG, and WebP formats
 //! with support for parallel processing, quality control, resizing, and backup creation.
 //!

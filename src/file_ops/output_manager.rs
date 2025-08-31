@@ -20,7 +20,7 @@ use std::path::{Path, PathBuf};
 /// # Errors
 ///
 /// Returns an error if:
-/// - Path stripping fails (file_path is not under input_path)
+/// - Path stripping fails (`file_path` is not under `input_path`)
 /// - Directory creation fails due to permissions or I/O errors
 ///
 /// # Examples

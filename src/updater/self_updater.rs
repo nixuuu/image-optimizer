@@ -42,9 +42,9 @@ const REPO_NAME: &str = "image-optimizer";
 /// # Platform Support
 ///
 /// Supports automatic updates on:
-/// - Linux (x86_64, aarch64)
-/// - macOS (x86_64, Apple Silicon)
-/// - Windows (x86_64)
+/// - Linux (`x86_64`, aarch64)
+/// - macOS (`x86_64`, Apple Silicon)
+/// - Windows (`x86_64`)
 pub fn update_self() -> Result<()> {
     println!("🔍 Checking for updates...");
     println!("Current version: v{CURRENT_VERSION}");

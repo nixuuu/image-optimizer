@@ -16,7 +16,7 @@ use crate::cli::Cli;
 /// * `input_path` - Path to the source JPEG file
 /// * `output_path` - Path where the optimized JPEG will be written
 /// * `args` - CLI configuration containing quality settings and lossless flag
-/// * `resized_img` - Optional pre-resized image data; if None, reads from input_path
+/// * `resized_img` - Optional pre-resized image data; if None, reads from `input_path`
 ///
 /// # Returns
 ///

@@ -16,7 +16,7 @@ use crate::cli::Cli;
 /// * `input_path` - Path to the source PNG file
 /// * `output_path` - Path where the optimized PNG will be written
 /// * `_args` - CLI configuration (currently unused for PNG optimization)
-/// * `resized_img` - Optional pre-resized image data; if None, copies from input_path
+/// * `resized_img` - Optional pre-resized image data; if None, copies from `input_path`
 ///
 /// # Returns
 ///

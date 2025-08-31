@@ -13,13 +13,13 @@
 /// # Returns
 ///
 /// A tuple `(new_width, new_height)` containing the calculated dimensions.
-/// If no resizing is needed (longer edge ≤ max_size), returns the original dimensions.
+/// If no resizing is needed (longer edge ≤ `max_size`), returns the original dimensions.
 ///
 /// # Algorithm
 ///
 /// 1. Determines the longer edge between width and height
-/// 2. If longer edge ≤ max_size, no resizing is needed
-/// 3. Otherwise, calculates a scaling factor to fit the longer edge to max_size
+/// 2. If longer edge ≤ `max_size`, no resizing is needed
+/// 3. Otherwise, calculates a scaling factor to fit the longer edge to `max_size`
 /// 4. Applies the scaling factor to both dimensions and rounds to nearest integer
 ///
 /// # Examples

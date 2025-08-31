@@ -18,9 +18,9 @@ use anyhow::Result;
 ///
 /// # Supported Platforms
 ///
-/// - **Linux**: x86_64, aarch64
-/// - **macOS**: x86_64 (Intel), aarch64 (Apple Silicon)
-/// - **Windows**: x86_64
+/// - **Linux**: `x86_64`, aarch64
+/// - **macOS**: `x86_64` (Intel), aarch64 (Apple Silicon)
+/// - **Windows**: `x86_64`
 ///
 /// # Examples
 ///
