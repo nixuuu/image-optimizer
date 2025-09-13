@@ -35,7 +35,7 @@ pub fn optimize_jpeg(
     args: &Cli,
     resized_img: Option<DynamicImage>,
 ) -> Result<()> {
-    let quality = if args.lossless { 100 } else { args.quality };
+    let quality = args.jpeg_quality;
 
     let (width, height, rgb_data) = if let Some(img) = resized_img {
         let rgb_img = img.to_rgb8();
