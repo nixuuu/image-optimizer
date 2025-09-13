@@ -51,7 +51,7 @@ fn main() -> Result<()> {
         .as_ref()
         .ok_or_else(|| anyhow::anyhow!("Input file or directory is required"))?;
 
-    if args.quality > 100 {
+    if args.jpeg_quality > 100 {
         return Err(anyhow::anyhow!("Quality must be between 1 and 100"));
     }
 

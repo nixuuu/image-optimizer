@@ -36,11 +36,11 @@ pub struct Cli {
 
     /// Use lossless compression
     #[arg(long)]
-    pub lossless: bool,
+    pub webp_lossless: bool,
 
     /// JPEG quality (1-100), ignored if lossless is set (applies to raster formats only)
-    #[arg(short, long, default_value = "85")]
-    pub quality: u8,
+    #[arg(long, default_value = "85")]
+    pub jpeg_quality: u8,
 
     /// Recursively scan subdirectories
     #[arg(short, long)]
@@ -69,8 +69,8 @@ mod tests {
         assert_eq!(cli.input, None);
         assert_eq!(cli.output, None);
         assert!(!cli.backup);
-        assert!(!cli.lossless);
-        assert_eq!(cli.quality, 85);
+        assert!(!cli.webp_lossless);
+        assert_eq!(cli.jpeg_quality, 85);
         assert!(!cli.recursive);
         assert_eq!(cli.max_size, None);
         assert!(!cli.update);
@@ -91,8 +91,8 @@ mod tests {
             "-o",
             "/output",
             "--backup",
-            "--lossless",
-            "-q",
+            "--webp-lossless",
+            "--jpeg-quality",
             "90",
             "--recursive",
             "--max-size",
@@ -103,8 +103,8 @@ mod tests {
         assert_eq!(cli.input, Some(PathBuf::from("/input")));
         assert_eq!(cli.output, Some(PathBuf::from("/output")));
         assert!(cli.backup);
-        assert!(cli.lossless);
-        assert_eq!(cli.quality, 90);
+        assert!(cli.webp_lossless);
+        assert_eq!(cli.jpeg_quality, 90);
         assert!(cli.recursive);
         assert_eq!(cli.max_size, Some(1024));
         assert!(cli.update);
@@ -113,11 +113,11 @@ mod tests {
 
     #[test]
     fn test_cli_quality_bounds() {
-        let cli = Cli::parse_from(&["image-optimizer", "-q", "1"]);
-        assert_eq!(cli.quality, 1);
+        let cli = Cli::parse_from(["image-optimizer", "--jpeg-quality", "1"]);
+        assert_eq!(cli.jpeg_quality, 1);
 
-        let cli = Cli::parse_from(&["image-optimizer", "-q", "100"]);
-        assert_eq!(cli.quality, 100);
+        let cli = Cli::parse_from(["image-optimizer", "--jpeg-quality", "100"]);
+        assert_eq!(cli.jpeg_quality, 100);
     }
 
     #[test]
