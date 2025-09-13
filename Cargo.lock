@@ -892,7 +892,7 @@ dependencies = [
 
 [[package]]
 name = "image-optimizer"
-version = "1.4.1"
+version = "1.5.0"
 dependencies = [
  "anyhow",
  "clap",
@@ -904,7 +904,6 @@ dependencies = [
  "regex",
  "reqwest",
  "serde",
- "serde_json",
  "walkdir",
  "webp",
 ]

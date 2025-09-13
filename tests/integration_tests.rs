@@ -13,7 +13,7 @@ fn test_cli_help() {
     assert!(stdout.contains("CLI tool for optimizing images"));
     assert!(stdout.contains("--input"));
     assert!(stdout.contains("--output"));
-    assert!(stdout.contains("--quality"));
+    assert!(stdout.contains("--jpeg-quality"));
 }
 
 #[test]

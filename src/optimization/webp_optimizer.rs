@@ -40,11 +40,11 @@ pub fn optimize_webp(
         image::open(input_path)?.to_rgb8()
     };
 
-    let encoder = if args.lossless {
+    let encoder = if args.webp_lossless {
         webp::Encoder::from_rgb(&rgb_img, rgb_img.width(), rgb_img.height()).encode_lossless()
     } else {
         webp::Encoder::from_rgb(&rgb_img, rgb_img.width(), rgb_img.height())
-            .encode(f32::from(args.quality))
+            .encode(f32::from(args.jpeg_quality))
     };
 
     fs::write(output_path, &*encoder)?;
