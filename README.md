@@ -68,10 +68,10 @@ cargo build --release
 image-optimizer -i ./images -r
 
 # Optimize to output directory with custom quality
-image-optimizer -i input_dir -o output_dir --quality 90
+image-optimizer -i input_dir -o output_dir --jpeg-quality 90
 
 # Create backups and use lossless compression
-image-optimizer -i images --backup --lossless
+image-optimizer -i images --backup --webp-lossless
 
 # Optimize SVG files (removes metadata, comments, editor attributes)
 image-optimizer -i icons/ -r
@@ -88,8 +88,8 @@ image-optimizer --update
 - `-i, --input <PATH>` - Input directory to scan for images
 - `-o, --output <PATH>` - Output directory (optional, defaults to in-place)
 - `--backup` - Create backup files (.bak extension)
-- `--lossless` - Use lossless compression
-- `-q, --quality <1-100>` - JPEG quality (default: 85, ignored if lossless, applies to raster formats only)
+- `--webp-lossless` - Use lossless compression for WebP
+- `--jpeg-quality <1-100>` - JPEG quality (default: 85, applies to raster formats only)
 - `-r, --recursive` - Recursively scan subdirectories
 - `--max-size <PIXELS>` - Maximum size for longer edge (resizes if larger, applies to raster formats only)
 - `--update` - Update to the latest version from GitHub releases
