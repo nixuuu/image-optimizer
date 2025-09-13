@@ -58,10 +58,10 @@ pub struct Cli {
     #[arg(long, default_value = "15")]
     pub zopfli_iterations: std::num::NonZeroU8,
 
-    #[arg(long, default_value = "false")]
+    #[arg(long)]
     pub no_zopfli: bool,
 
-    #[arg(long, default_value = "false")]
+    #[arg(long)]
     pub no_parallel: bool,
 
     /// Update to the latest version

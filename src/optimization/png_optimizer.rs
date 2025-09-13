@@ -42,19 +42,17 @@ pub fn optimize_png(
         fs::copy(input_path, output_path)?;
     }
 
-    let optimization_level = match args.png_optimization_level.as_str() {
-        "0" => 0,
-        "1" => 1,
-        "2" => 2,
-        "3" => 3,
-        "4" => 4,
-        "5" => 5,
-        "6" | "max" => 6, // max is equivalent to level 6
-        _ => {
-            return Err(anyhow::anyhow!(
-                "Invalid oxipng optimization level: {}. Valid values are 0-6 or 'max'",
-                args.png_optimization_level
-            ));
+    let optimization_level = if args.png_optimization_level == "max" {
+        6
+    } else {
+        match args.png_optimization_level.parse::<u8>() {
+            Ok(level) if level <= 6 => level,
+            _ => {
+                return Err(anyhow::anyhow!(
+                    "Invalid oxipng optimization level: {}. Valid values are 0-6 or 'max'",
+                    args.png_optimization_level
+                ));
+            }
         }
     };
 
