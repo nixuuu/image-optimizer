@@ -904,7 +904,6 @@ dependencies = [
  "regex",
  "reqwest",
  "serde",
- "serde_json",
  "walkdir",
  "webp",
 ]
