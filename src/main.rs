@@ -2,6 +2,7 @@ use anyhow::Result;
 use clap::Parser;
 use indicatif::{ProgressBar, ProgressStyle};
 use rayon::prelude::*;
+use std::path::PathBuf;
 use std::sync::{Arc, Mutex};
 
 mod cli;
@@ -84,7 +85,7 @@ fn main() -> Result<()> {
     let processed = Arc::new(Mutex::new(0usize));
     let skipped = Arc::new(Mutex::new(0usize));
 
-    image_files.into_par_iter().for_each(|image_path| {
+    let image_processor = |image_path: PathBuf| {
         pb.set_message(format!(
             "Processing: {}",
             image_path.file_name().unwrap_or_default().to_string_lossy()
@@ -109,7 +110,13 @@ fn main() -> Result<()> {
         }
 
         pb.inc(1);
-    });
+    };
+
+    if args.no_parallel {
+        image_files.into_iter().for_each(image_processor);
+    } else {
+        image_files.into_par_iter().for_each(image_processor);
+    }
 
     let total_saved = total_saved.lock().map(|guard| *guard).unwrap_or(0);
     let processed = processed.lock().map(|guard| *guard).unwrap_or(0);

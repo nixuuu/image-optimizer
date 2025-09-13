@@ -50,6 +50,9 @@ pub struct Cli {
     #[arg(long)]
     pub max_size: Option<u32>,
 
+    #[arg(long, default_value = "false")]
+    pub no_parallel: bool,
+
     /// Update to the latest version
     #[arg(long)]
     pub update: bool,
@@ -105,6 +108,7 @@ mod tests {
         assert!(cli.recursive);
         assert_eq!(cli.max_size, Some(1024));
         assert!(cli.update);
+        assert!(!cli.no_parallel);
     }
 
     #[test]
