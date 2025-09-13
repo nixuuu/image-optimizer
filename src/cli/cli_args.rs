@@ -50,6 +50,17 @@ pub struct Cli {
     #[arg(long)]
     pub max_size: Option<u32>,
 
+    /// Oxipng optimization level (0-6 or max)
+    #[arg(long, default_value = "2")]
+    pub png_optimization_level: String,
+
+    /// Zopfli iterations for optimization (1-255)
+    #[arg(long, default_value = "15")]
+    pub zopfli_iterations: std::num::NonZeroU8,
+
+    #[arg(long, default_value = "false")]
+    pub no_zopfli: bool,
+
     #[arg(long, default_value = "false")]
     pub no_parallel: bool,
 
@@ -65,7 +76,7 @@ mod tests {
 
     #[test]
     fn test_cli_defaults() {
-        let cli = Cli::parse_from(&["image-optimizer"]);
+        let cli = Cli::parse_from(["image-optimizer"]);
         assert_eq!(cli.input, None);
         assert_eq!(cli.output, None);
         assert!(!cli.backup);
@@ -73,18 +84,20 @@ mod tests {
         assert_eq!(cli.jpeg_quality, 85);
         assert!(!cli.recursive);
         assert_eq!(cli.max_size, None);
+        assert_eq!(cli.png_optimization_level, "2");
+        assert_eq!(cli.zopfli_iterations.get(), 15);
         assert!(!cli.update);
     }
 
     #[test]
     fn test_cli_with_input() {
-        let cli = Cli::parse_from(&["image-optimizer", "-i", "/path/to/images"]);
+        let cli = Cli::parse_from(["image-optimizer", "-i", "/path/to/images"]);
         assert_eq!(cli.input, Some(PathBuf::from("/path/to/images")));
     }
 
     #[test]
     fn test_cli_with_all_flags() {
-        let cli = Cli::parse_from(&[
+        let cli = Cli::parse_from([
             "image-optimizer",
             "-i",
             "/input",
@@ -97,6 +110,10 @@ mod tests {
             "--recursive",
             "--max-size",
             "1024",
+            "--png-optimization-level",
+            "max",
+            "--zopfli-iterations",
+            "25",
             "--update",
         ]);
 
@@ -107,7 +124,10 @@ mod tests {
         assert_eq!(cli.jpeg_quality, 90);
         assert!(cli.recursive);
         assert_eq!(cli.max_size, Some(1024));
+        assert_eq!(cli.png_optimization_level, "max");
+        assert_eq!(cli.zopfli_iterations.get(), 25);
         assert!(cli.update);
+        assert!(!cli.no_zopfli);
         assert!(!cli.no_parallel);
     }
 

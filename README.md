@@ -5,7 +5,7 @@ A fast, parallel CLI tool for optimizing images (JPEG, PNG, WebP, SVG) written i
 ## Features
 
 - **Multiple formats**: Supports JPEG, PNG, WebP, and SVG optimization
-- **High-quality compression**: Uses mozjpeg, oxipng with zopfli, WebP encoders, and regex-based SVG optimization
+- **High-quality compression**: Uses mozjpeg, oxipng (with zopfli compression by default), WebP encoders, and regex-based SVG optimization
 - **Parallel processing**: Optimizes multiple images concurrently for speed
 - **Flexible output**: In-place optimization or separate output directory
 - **Image resizing**: Optional resizing with `--max-size` parameter (applies to raster formats only)
@@ -79,6 +79,12 @@ image-optimizer -i icons/ -r
 # Resize raster images to max 1920px on longer edge
 image-optimizer -i photos --max-size 1920
 
+# Use maximum PNG optimization level
+image-optimizer -i images --png-optimization-level max
+
+# Use PNG optimization without zopfli compression
+image-optimizer -i images --no-zopfli
+
 # Update to the latest version
 image-optimizer --update
 ```
@@ -92,13 +98,15 @@ image-optimizer --update
 - `--jpeg-quality <1-100>` - JPEG quality (default: 85, applies to raster formats only)
 - `-r, --recursive` - Recursively scan subdirectories
 - `--max-size <PIXELS>` - Maximum size for longer edge (resizes if larger, applies to raster formats only)
+- `--png-optimization-level <0-6|max>` - PNG optimization level (default: 2, max is alias for 6)
+- `--no-zopfli` - Disable zopfli compression for PNG optimization
 - `--update` - Update to the latest version from GitHub releases
 
 ## Supported Formats
 
 ### Raster Images
 - **JPEG** (.jpg, .jpeg) - Optimized with mozjpeg for superior compression
-- **PNG** (.png) - Optimized with oxipng and zopfli compression algorithms
+- **PNG** (.png) - Optimized with oxipng (uses zopfli compression by default, can be disabled with --no-zopfli)
 - **WebP** (.webp) - Optimized with Google's WebP encoder
 
 ### Vector Graphics  
